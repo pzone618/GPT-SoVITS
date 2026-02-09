@@ -236,6 +236,204 @@ D:\GPT-SoVITS\xxx/xxx.wav|xxx|en|I like playing Genshin.
 
 ```
 
+## Quick Start Guide
+
+### For Windows 11 Users (Recommended - UV Package Manager)
+
+**Step 1: Clone and Setup**
+```bash
+git clone https://github.com/RVC-Boss/GPT-SoVITS.git
+cd GPT-SoVITS
+uv venv --python 3.11
+.\.venv\Scripts\Activate.ps1
+uv pip install -r requirements.txt -r extra-req.txt
+```
+
+**Step 2: Download Models**
+```bash
+python GPT_SoVITS/download.py
+```
+
+**Step 3: Start Web UI**
+```powershell
+.\launch_webui.ps1
+```
+Then open http://localhost:7860 in your browser.
+
+### For Other Users
+
+1. Install dependencies: `pip install -r requirements.txt`
+2. Download pretrained models (see Pretrained Models section above)
+3. Run: `python webui.py`
+4. Open browser to http://localhost:7860
+
+## System Requirements
+
+### Minimum Requirements
+- **OS**: Windows 10+, Ubuntu 20.04+, macOS 11+
+- **Python**: 3.9, 3.10, 3.11, 3.12
+- **RAM**: 8 GB (16 GB+ recommended)
+- **Disk**: 20 GB (for models and outputs)
+
+### Recommended Configuration
+| Task | GPU | CPU | RAM | Notes |
+|------|-----|-----|-----|-------|
+| **Inference Only** | 2GB VRAM | i5-8400 | 8GB | Supports RTX 2060 and newer |
+| **Fine-tuning** | 6GB VRAM | i7-9700 | 16GB | Supports RTX 3060 and newer |
+| **Training** | 12GB+ VRAM | i9+ or Ryzen 9+ | 32GB | Supports RTX 3090 Ti, 4080, H100 |
+| **CPU Only** | N/A | High-end | 32GB | Significantly slower |
+
+### Supported GPUs
+- **NVIDIA**: RTX 2060, 3060, 3090, 4080, A100, H100, etc.
+- **CUDA**: 11.8, 12.1, 12.4, 12.8
+- **AMD**: Limited support (via ROCm)
+- **Apple Silicon (M1/M2/M3)**: CPU-based inference
+
+## FAQ
+
+**Q: How long does fine-tuning take?**
+A: Training typically takes 2-10 hours depending on dataset size and GPU. Inference is fast (0.03-0.5 RTF).
+
+**Q: Can I use the model for commercial purposes?**
+A: Yes, under MIT license. See License section below.
+
+**Q: Does it support multi-speaker?**
+A: Yes, you can train multiple speakers with a single model. Specify `speaker_name` in the dataset.
+
+**Q: What audio quality is needed for input?**
+A: 16kHz mono audio is recommended. The model can handle 8kHz-48kHz.
+
+**Q: Can I train on low-quality audio?**
+A: Yes, but output quality depends on input quality. Voice enhancement preprocessing may help.
+
+**Q: Is GPU required?**
+A: No, CPU inference is supported but much slower (10-30x slower than GPU).
+
+**Q: Why is the output voice robotic or metallic?**
+A: Usually caused by: (1) low-quality reference audio, (2) insufficient training data, (3) model version mismatch. Try v4 which fixes metallic artifacts.
+
+**Q: How do I choose between versions (v1/v2/v3/v4/v2Pro)?**
+A: - **v2Pro**: Best overall, balance of speed and quality
+- **v4**: High quality, native 48k output
+- **v3**: Good quality, 24k output
+- **v2**: Good for low-quality audio training
+- **v1**: Legacy, slower
+
+## Troubleshooting
+
+### Installation Issues
+
+**Problem: `ModuleNotFoundError: No module named 'torch'`**
+- Solution: Ensure virtual environment is activated and run `pip install -r requirements.txt`
+
+**Problem: CUDA not detected**
+- Solution: Reinstall PyTorch with correct CUDA version
+  ```bash
+  pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+  ```
+
+**Problem: `FFmpeg not found`**
+- Windows: Download from [FFmpeg website](https://ffmpeg.org/download.html) and add to PATH
+- Ubuntu: `sudo apt install ffmpeg`
+- macOS: `brew install ffmpeg`
+
+### Runtime Issues
+
+**Problem: Out of Memory (OOM)**
+- Solution: 
+  - Reduce batch size in config
+  - Enable half-precision: `is_half: true`
+  - Use smaller model (v2 instead of v4)
+  - Close other applications
+
+**Problem: Model loading fails**
+- Solution: Verify model paths in `GPT_SoVITS/pretrained_models/`, redownload if corrupted
+
+**Problem: Empty audio output**
+- Solution: Check reference audio format (must be WAV/MP3), ensure it's not silent
+
+**Problem: Web UI port already in use**
+- Solution: Change port in config or kill process using port 7860
+  ```bash
+  # Windows
+  netstat -ano | findstr :7860
+  taskkill /PID <PID> /F
+  ```
+
+### Performance Issues
+
+**Problem: Slow inference**
+- Solution: Enable GPU acceleration, check CUDA is working: `python -c "import torch; print(torch.cuda.is_available())"`
+
+**Problem: High VRAM usage**
+- Solution: Set `is_half: true` in config to use fp16, reduces memory by ~50%
+
+## Environment Configuration
+
+### GPU Selection
+```bash
+# Force CPU
+set CUDA_VISIBLE_DEVICES=-1
+
+# Use GPU 0
+set CUDA_VISIBLE_DEVICES=0
+
+# Use multiple GPUs
+set CUDA_VISIBLE_DEVICES=0,1
+```
+
+### Performance Tuning
+```bash
+# Enable mixed precision (faster)
+set CUDA_LAUNCH_BLOCKING=0
+
+# Limit CPU threads (prevent resource contention)
+set OMP_NUM_THREADS=4
+```
+
+## License
+
+This project is licensed under the **MIT License** - see [LICENSE](./LICENSE) file for details.
+
+### Key Points:
+- ✅ Free for commercial use
+- ✅ Free for personal use
+- ✅ Free for research use
+- ✅ Can modify and distribute
+- ⚠️ Must include license notice
+- ⚠️ No liability/warranty provided
+
+For full terms, visit [MIT License](https://opensource.org/licenses/MIT)
+
+## Contributing
+
+We welcome contributions! Here's how you can help:
+
+### Report Issues
+- Use [GitHub Issues](https://github.com/RVC-Boss/GPT-SoVITS/issues) to report bugs
+- Include Python version, OS, GPU info, and error logs
+- Describe steps to reproduce
+
+### Submit Code
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/your-feature`
+3. Commit changes: `git commit -m "Add feature description"`
+4. Push to branch: `git push origin feature/your-feature`
+5. Open Pull Request with detailed description
+
+### Improve Documentation
+- Fix typos and clarify explanations
+- Add examples and guides
+- Translate to other languages
+
+### Suggested Areas
+- [ ] Improve inference speed
+- [ ] Optimize memory usage
+- [ ] Add new language support
+- [ ] Enhance training UI
+- [ ] Improve error messages
+- [ ] Add more examples
+
 ## Finetune and inference
 
 ### Open WebUI
@@ -244,6 +442,31 @@ D:\GPT-SoVITS\xxx/xxx.wav|xxx|en|I like playing Genshin.
 
 Double-click `go-webui.bat`or use `go-webui.ps1`
 if you want to switch to V1,then double-click`go-webui-v1.bat` or use `go-webui-v1.ps1`
+
+#### Windows 11 Users (UV Package Manager)
+
+If you have deployed the project using UV on Windows 11, you can use the provided startup scripts:
+
+**PowerShell (Recommended)**:
+```powershell
+.\launch_webui.ps1
+```
+
+**CMD**:
+```cmd
+launch_webui.bat
+```
+
+**Manual Method**:
+```bash
+# Activate virtual environment
+.\.venv\Scripts\Activate.ps1
+
+# Start Web UI
+python webui.py
+```
+
+Then open your browser and navigate to `http://localhost:7860`
 
 #### Others
 

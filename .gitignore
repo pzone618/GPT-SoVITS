@@ -119,7 +119,7 @@ ipython_config.py
 #   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
-#uv.lock
+uv.lock
 
 # poetry
 #   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
@@ -148,14 +148,16 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# Environments
-.env
+# Python virtual environments
+.venv/
 .venv
-env/
 venv/
+.venv_old/
+env/
 ENV/
 env.bak/
 venv.bak/
+.env.bak
 
 # Spyder project settings
 .spyderproject
@@ -193,3 +195,187 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+# ============================================================================
+# GPT-SoVITS Project Specific
+# ============================================================================
+
+# Model weights and checkpoints
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.bin
+*.model
+checkpoints/
+saved_model/
+pretrained_models/**
+!pretrained_models/.gitkeep
+
+# Training and inference outputs
+outputs/
+results/
+inferences/
+predictions/
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.m4a
+output_audio_*
+generated_*
+infer_output/
+train_output/
+
+# Temporary files and logs
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+*~
+*.log
+install_log.txt
+build_log.txt
+*.lock
+
+# IDE specific files (beyond .vscode and .idea)
+*.sublime-project
+*.sublime-workspace
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/tasks.json
+.vscode/c_cpp_properties.json
+.idea/
+.idea_modules/
+*.iml
+*.iws
+*.ipr
+.env.local
+.env.local.php
+
+# Environment variables
+.env.local
+.env.*.local
+.envrc
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+.AppleDouble
+.LSOverride
+._*
+
+# Installation and build artifacts
+*.whl
+install_log.txt
+build_log.txt
+
+# Windows specific
+*.exe
+*.msi
+*.cab
+*.zip
+.windows_build/
+
+# Compiled models and caches
+*.so.build
+*.dll.build
+*.pyd.build
+
+# Gradio and Web UI caches
+.gradio_cached/
+gradio_cached_examples/
+*.pkl
+*.pickle
+
+# Training logs and TensorBoard data
+runs/
+lightning_logs/
+tb_logs/
+wandb/
+*.event*
+
+# Data and datasets
+data/
+datasets/
+raw_data/
+processed_data/
+!data/.gitkeep
+
+# Cache directories
+.cache/
+*.cache
+funasr_cache/
+huggingface_cache/
+transformers_cache/
+.transformers_cache/
+
+# Test outputs
+.pytest_cache/
+test_results/
+test_outputs/
+
+# Audio processing temporary files
+*.srt
+*.vtt
+split_audio/
+audio_chunks/
+
+# macOS
+.AppleDouble
+.LSOverride
+._*
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+._*
+
+# vi/vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt][a-z]
+Session.vim
+.netrwhist
+
+# ============================================================================
+# Additional Project Files & Artifacts
+# ============================================================================
+
+# Processed audio files
+*.slice
+*.segment
+*.processed
+audio_slices/
+processed_audios/
+split_results/
+
+# Model analysis files
+*.profile
+*.timeline
+profiling_results/
+benchmark_results/
+
+# Documentation and reports
+docs_build/
+site/
+docs/.venv/
+
+# Jupyter notebooks cell outputs (but keep the files)
+.ipynb_checkpoints/
+
+# VS Code workspace files
+*.code-workspace
+
+# Python packaging
+pyproject.lock
+setup.cfg
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+test-results/
+test_*.log

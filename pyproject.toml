@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "GPT-SoVITS"
+version = "1.0.0"
+description = "A Robust and Controllable Voice Conversion Framework"
+authors = [
+    {name = "RVC-Boss", email = "dev@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+license = {text = "MIT"}
+
+dependencies = [
+    # Core dependencies
+    "numpy<2.0",
+    "scipy",
+    "tensorboard",
+    "librosa==0.10.2",
+    "numba",
+    
+    # Deep Learning
+    "pytorch-lightning>=2.4",
+    "peft<0.18.0",
+    "torchmetrics<=1.5",
+    "torchaudio",
+    "rotary_embedding_torch",
+    "x_transformers",
+    
+    # Model and transformers
+    "transformers>=4.43,<=4.50",
+    "modelscope",
+    "sentencepiece",
+    "ctranslate2>=4.0,<5",
+    
+    # ONNX Runtime - platform-specific
+    "onnxruntime-gpu; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
+    
+    # Audio and Media
+    "ffmpeg-python",
+    "av>=11",
+    "faster-whisper",
+    
+    # ASR and NLP
+    "funasr==1.0.27",
+    "cn2an",
+    "pypinyin",
+    "pyopenjtalk>=0.4.1",
+    "g2p_en",
+    "jieba_fast",
+    "jieba",
+    "split-lang",
+    "fast_langdetect>=0.3.1",
+    "wordsegment",
+    "chardet",
+    "opencc; sys_platform != 'win32'",
+    "ToJyutping",
+    "g2pk2",
+    "ko_pron",
+    
+    # Web Framework
+    "fastapi[standard]>=0.115.2",
+    "gradio<5",
+    
+    # Utilities
+    "pydantic<=2.10.6",
+    "PyYAML",
+    "psutil",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black",
+    "ruff",
+    "mypy",
+]
+
+[tool.setuptools]
+packages = ["GPT_SoVITS"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+GPT_SoVITS = ["**/*.yaml", "**/*.json", "**/*.txt", "pretrained_models/*"]
