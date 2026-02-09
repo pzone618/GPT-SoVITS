@@ -92,7 +92,41 @@ bash install.sh --device <CU126|CU128|ROCM|CPU> --source <HF|HF-Mirror|ModelScop
 
 **Note: The models trained with GPUs on Macs result in significantly lower quality compared to those trained on other devices, so we are temporarily using CPUs instead.**
 
-Install the program by running the following commands:
+#### Prerequisites
+- **FFmpeg**: Required for audio processing. Install via Homebrew: `brew install ffmpeg`
+
+---
+
+#### Option 1: Using uv (Recommended for M4/Apple Silicon)
+
+**Note**: This project supports **Python 3.13** on macOS M4/Apple Silicon. The `uv` workflow below handles all version management, dependency installation (including compiling native modules), and optimization automatically.
+
+1.  **Install uv** (if not installed):
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+
+2.  **Initialize environment and install dependencies**:
+    ```bash
+    uv sync
+    ```
+
+3.  **Download Models**:
+    Use the provided script:
+    ```bash
+    # Ensure ffmpeg is installed first: brew install ffmpeg
+    uv run scripts/download_models.sh --source HF
+    ```
+    *Note: This script handles downloading pretrained models, G2PW, and ensuring NLTK/OpenJTalk data is placed correctly in the virtual environment.*
+
+4.  **Run WebUI**:
+    ```bash
+    uv run webui.py
+    ```
+
+#### Option 2: Using Conda (Legacy)
+
+Install the program by running the following commands (Requires existing Anaconda/Miniconda installation):
 
 ```bash
 conda create -n GPTSoVits python=3.10

@@ -193,3 +193,14 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# Mac Deployment & Dev Tools
+.uv
+site-packages
+*.swp
+*.swo
+.env.local
+
+# Note: uv.lock is intentionally NOT ignored to ensure reproducible builds
+# uv.lock
